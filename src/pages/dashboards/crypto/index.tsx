@@ -2,15 +2,15 @@ import Head from 'next/head';
 
 import SidebarLayout from '@/app/components/widgets/layouts/SidebarLayout';
 
-import PageHeader from '@/app/pages/Dashboards/Crypto/PageHeader';
+import PageHeader from '@/app/components/pages/Dashboards/Crypto/PageHeader';
 import PageTitleWrapper from '@/app/components/shared/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from '@/app/components/shared/Footer';
 
-import AccountBalance from '@/app/pages/Dashboards/Crypto/AccountBalance';
-import Wallets from '@/app/pages/Dashboards/Crypto/Wallets';
-import AccountSecurity from '@/app/pages/Dashboards/Crypto/AccountSecurity';
-import WatchList from '@/app/pages/Dashboards/Crypto/WatchList';
+import AccountBalance from '@/app/components/pages/Dashboards/Crypto/AccountBalance';
+import Wallets from '@/app/components/pages/Dashboards/Crypto/Wallets';
+import AccountSecurity from '@/app/components/pages/Dashboards/Crypto/AccountSecurity';
+import WatchList from '@/app/components/pages/Dashboards/Crypto/WatchList';
 
 function DashboardCrypto() {
   return (

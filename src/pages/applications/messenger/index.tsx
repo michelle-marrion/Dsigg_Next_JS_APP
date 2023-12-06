@@ -3,10 +3,10 @@ import { useState } from 'react';
 import Head from 'next/head';
 import SidebarLayout from '@/app/components/widgets/layouts/SidebarLayout';
 
-import TopBarContent from '@/app/pages/Applications/Messenger/TopBarContent';
-import BottomBarContent from '@/app/pages/Applications/Messenger/BottomBarContent';
-import SidebarContent from '@/app/pages/Applications/Messenger/SidebarContent';
-import ChatContent from '@/app/pages/Applications/Messenger/ChatContent';
+import TopBarContent from '@/app/components/pages/Applications/Messenger/TopBarContent';
+import BottomBarContent from '@/app/components/pages/Applications/Messenger/BottomBarContent';
+import SidebarContent from '@/app/components/pages/Applications/Messenger/SidebarContent';
+import ChatContent from '@/app/components/pages/Applications/Messenger/ChatContent';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 
 import Scrollbar from '@/app/components/shared/Scrollbar';

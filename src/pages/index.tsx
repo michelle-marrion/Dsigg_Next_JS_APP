@@ -6,7 +6,7 @@ import Link from 'src/app/components/shared/Link';
 import Head from 'next/head';
 
 import Logo from 'src/app/components/shared/LogoSign';
-import Hero from 'src/app/pages/Overview/Hero';
+import Hero from 'src/app/components/pages/Overview/Hero';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `

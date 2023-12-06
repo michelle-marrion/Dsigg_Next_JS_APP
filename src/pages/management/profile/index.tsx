@@ -4,12 +4,12 @@ import Footer from '@/app/components/shared/Footer';
 
 import { Grid, Container } from '@mui/material';
 
-import ProfileCover from '@/app/pages/Management/Users/details/ProfileCover';
-import RecentActivity from '@/app/pages/Management/Users/details/RecentActivity';
-import Feed from '@/app/pages/Management/Users/details/Feed';
-import PopularTags from '@/app/pages/Management/Users/details/PopularTags';
-import MyCards from '@/app/pages/Management/Users/details/MyCards';
-import Addresses from '@/app/pages/Management/Users/details/Addresses';
+import ProfileCover from '@/app/components/pages/Management/Users/details/ProfileCover';
+import RecentActivity from '@/app/components/pages/Management/Users/details/RecentActivity';
+import Feed from '@/app/components/pages/Management/Users/details/Feed';
+import PopularTags from '@/app/components/pages/Management/Users/details/PopularTags';
+import MyCards from '@/app/components/pages/Management/Users/details/MyCards';
+import Addresses from '@/app/components/pages/Management/Users/details/Addresses';
 
 function ManagementUserProfile() {
   const user = {
