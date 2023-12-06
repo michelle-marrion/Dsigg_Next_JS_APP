@@ -34,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# archive 
+*.Zip
+*.tgz
+*.gz
+# mais pas ce fichier car utile
+!.gitignore
