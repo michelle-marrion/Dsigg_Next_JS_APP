@@ -1,4 +1,4 @@
-/* import * as React from 'react';
+import * as React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '@/createEmotionCache';
@@ -84,17 +84,3 @@ MyDocument.getInitialProps = async (ctx) => {
     ]
   };
 };
- */
-import { Html, Head, Main, NextScript } from 'next/document'
-
-export default function Document() {
-  return (
-    <Html lang="en">
-      <Head />
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  )
-}
