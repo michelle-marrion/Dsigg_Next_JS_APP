@@ -2,9 +2,11 @@
 import { ReactNode } from 'react'
 // ** MUI Imports
 import Zoom from '@mui/material/Zoom'
+import {ToggleButton} from '@mui/material'
 import { styled } from '@mui/material/styles'
 import useScrollTrigger from '@mui/material/useScrollTrigger'
 
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 interface ScrollToTopProps {
   className?: string
   children: ReactNode
@@ -43,4 +45,27 @@ const ScrollToTop = (props: ScrollToTopProps) => {
   )
 }
 
-export default ScrollToTop
+
+export type LayoutProps = {
+  scrollToTop?: (props?: any) => ReactNode
+}
+const GoToTop = (props : LayoutProps) =>
+{
+  const {scrollToTop } = props
+  return(
+    <>
+      {/* Scroll to top button */}
+      {scrollToTop ? (
+        scrollToTop(props)
+      ) : (
+        <ScrollToTop className='mui-fixed'>
+           <ToggleButton disableRipple value="Go to top" color='secondary'>
+            <ArrowUpwardIcon/>
+          </ToggleButton>
+        </ScrollToTop>
+      )}
+    </>
+  );
+
+}
+export default GoToTop ;

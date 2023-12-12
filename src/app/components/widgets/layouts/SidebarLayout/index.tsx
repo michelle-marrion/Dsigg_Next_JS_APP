@@ -1,13 +1,10 @@
 import { FC, ReactNode } from 'react';
-import { Box, alpha, lighten, useTheme, ToggleButton } from '@mui/material';
-import Fab from '@mui/material/Fab' ;
-import ArrowUp from 'mdi-material-ui/ArrowUp';
+import { Box, alpha, lighten, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
-import ScrollToTop from '@/app/components/shared/Scroll-To-Top';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import GoToTop from '@/app/components/shared/Scroll-To-Top';
 
 
 
@@ -15,28 +12,6 @@ interface SidebarLayoutProps {
   children?: ReactNode;
 }
 
-export type LayoutProps = {
-  scrollToTop?: (props?: any) => ReactNode
-}
-const GoToTop = (props : LayoutProps) =>
-{
-  const {scrollToTop } = props
-  return(
-    <>
-      {/* Scroll to top button */}
-      {scrollToTop ? (
-        scrollToTop(props)
-      ) : (
-        <ScrollToTop className='mui-fixed'>
-           <ToggleButton disableRipple value="Go to top" color='secondary'>
-            <ArrowUpwardIcon/>
-          </ToggleButton>
-        </ScrollToTop>
-      )}
-    </>
-  );
-
-}
 const SidebarLayout: FC<SidebarLayoutProps> = ({ children }) => {
   const theme = useTheme();
   // ** Props
@@ -87,7 +62,7 @@ const SidebarLayout: FC<SidebarLayoutProps> = ({ children }) => {
           <Box display="block">{children}</Box>
         </Box>
       </Box>
-      {/*  */}
+      {/*<GoToTop/>  */}
       <GoToTop/>
     </>
   );
