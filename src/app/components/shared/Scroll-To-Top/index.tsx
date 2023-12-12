@@ -30,8 +30,12 @@ const ScrollToTop = (props: ScrollToTopProps) => {
   })
 
   const handleClick = () => {
+    //selectionner l'élément 'body' du document
     const anchor = document.querySelector('body')
+
+    //veridie si l'élément 'body' existe
     if (anchor) {
+      //utilise la méthode 'scrollIntoView pour faire défiler l'élément body à l'écran
       anchor.scrollIntoView({ behavior: 'smooth' })
     }
   }
