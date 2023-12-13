@@ -3,9 +3,7 @@ import { useRouter } from 'next/router';
 import {
   Box,
   IconButton,
-  Button,
   Tooltip,
-  Avatar,
   Accordion,
   AccordionSummary,
   AccordionDetails,

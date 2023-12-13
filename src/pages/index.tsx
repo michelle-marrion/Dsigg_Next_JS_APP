@@ -7,6 +7,7 @@ import Head from 'next/head';
 
 import Logo from 'src/app/components/shared/LogoSign';
 import Hero from 'src/app/components/pages/Overview/Hero';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -31,7 +32,7 @@ function Overview() {
   return (
     <OverviewWrapper>
       <Head>
-        <title>Tokyo Free White NextJS Typescript Admin Dashboard</title>
+        <title>Template App NextJS</title>
       </Head>
       <HeaderWrapper>
         <Container maxWidth="lg">
@@ -47,29 +48,42 @@ function Overview() {
               <Box>
                 <Button
                   component={Link}
-                  href="/dashboards/crypto"
+                  href="/dashboards/home"
                   variant="contained"
                   sx={{ ml: 2 }}
                 >
-                  Live Preview
+                  <ArrowForwardRoundedIcon/>
                 </Button>
               </Box>
             </Box>
           </Box>
         </Container>
       </HeaderWrapper>
-      <Hero />
-      <Container maxWidth="lg" sx={{ mt: 8 }}>
-        <Typography textAlign="center" variant="subtitle1">
-          Crafted by{' '}
+      <Hero/>
+      <Container 
+        maxWidth="lg" 
+        sx={{ mt: 8 }} 
+        style={{
+          position:'fixed',
+          left : 0,
+          bottom: 10,
+          width: 'auto',
+          color : 'white',
+      
+        }}>
+          <Box alignItems="center">
+            <Typography textAlign="center" variant="subtitle1" >
+            Edité par {' '}
           <Link
-            href="https://bloomui.com"
+            href="https://aglgroup.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            BloomUI.com
+            aglgroup.com
           </Link>
         </Typography>
+          </Box>
+        
       </Container>
     </OverviewWrapper>
   );

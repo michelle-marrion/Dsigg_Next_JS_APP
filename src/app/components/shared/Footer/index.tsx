@@ -18,7 +18,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2022 - Tokyo Free White Next.js Typescript Admin Dashboard
+            &copy; 2023 - Template NextJS APP
           </Typography>
         </Box>
         <Typography
@@ -27,13 +27,13 @@ function Footer() {
           }}
           variant="subtitle1"
         >
-          Crafted by{' '}
+          Edited by{' '}
           <Link
-            href="https://bloomui.com"
+            href="https://aglgroup.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            BloomUI.com
+            aglgro.com
           </Link>
         </Typography>
       </Box>

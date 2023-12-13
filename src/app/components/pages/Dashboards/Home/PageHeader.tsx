@@ -3,8 +3,8 @@ import { useTheme } from '@mui/material/styles';
 
 function PageHeader() {
   const user = {
-    name: 'Catherine Pike',
-    avatar: '/images/avatars/1.jpg'
+    name: 'Michelle Ngami',
+    avatar: '/logos/logo_AGL_rgb_Blue.png'
   };
   const theme = useTheme();
 
@@ -27,7 +27,7 @@ function PageHeader() {
           Welcome, {user.name}!
         </Typography>
         <Typography variant="subtitle2">
-          Today is a good day to start trading crypto assets!
+          NextJS APP Template
         </Typography>
       </Grid>
     </Grid>
