@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 <p align="center">
     <a href="https://aglgroup.com" title="aglgroup.com">
-        <img src="PUBLIC/logos/logo_AGL_rgb_Blue.png" alt="AGL GROUP">
+        <img src="public/logos/logo_AGL_rgb_Blue.png" alt="AGL GROUP">
     </a>
 </p>
 <h1 align="center">
