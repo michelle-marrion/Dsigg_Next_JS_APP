@@ -1,43 +1,29 @@
 import { Box, Container, Link, Typography, styled } from '@mui/material';
 
+import 'src/styles/globals.css' ;
+
 const FooterWrapper = styled(Container)(
   ({ theme }) => `
         margin-top: ${theme.spacing(4)};
 `
 );
 
-function Footer() {
+const Footer = (props) =>{
   return (
-    <FooterWrapper className="footer-wrapper">
-      <Box
-        pb={4}
-        display={{ xs: 'block', md: 'flex' }}
-        alignItems="center"
-        textAlign={{ xs: 'center', md: 'left' }}
-        justifyContent="space-between"
-      >
-        <Box>
-          <Typography variant="subtitle1">
-            &copy; 2023 - Template NextJS APP
-          </Typography>
-        </Box>
-        <Typography
-          sx={{
-            pt: { xs: 2, md: 0 }
-          }}
-          variant="subtitle1"
-        >
-          Edited by{' '}
-          <Link
-            href="https://aglgroup.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            aglgro.com
-          </Link>
-        </Typography>
-      </Box>
-    </FooterWrapper>
+    <>
+          <div style={{padding :35}}></div>
+          <footer className='footer mt-3'>
+            <Typography variant="subtitle1" color="text.secondary" align="center" className='m-0 py-3' {...props}>
+            &copy;   {new Date().getFullYear()}
+                {'.'} - Template NextJS APP {' / '}
+                Edited by {' '}
+                <Link color="inherit" href="https://aglgroup.com" target="_blank">
+                    AFRICA GLOBAL LOGISTICS
+                </Link>{' '}
+              
+            </Typography>
+        </footer>
+      </>
   );
 }
 
