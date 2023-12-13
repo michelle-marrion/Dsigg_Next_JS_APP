@@ -85,27 +85,30 @@ function HeaderMenu() {
           }
         }}
       >
+
         <List disablePadding component={Box} display="flex">
+          <ListItem></ListItem>
+          
           <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
-            href="/components/buttons"
+            href="/dashboards/home"
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Buttons"
+              primary="Accueil"
             />
           </ListItem>
           <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
-            href="/components/forms"
+            href="/status/500"
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Forms"
+              primary="Sociétés"
             />
           </ListItem>
           <ListItem
@@ -118,7 +121,7 @@ function HeaderMenu() {
               primaryTypographyProps={{ noWrap: true }}
               primary={
                 <Box display="flex" alignItems="center">
-                  Others
+                  Utilisateurs
                   <Box display="flex" alignItems="center" pl={0.3}>
                     <ExpandMoreTwoToneIcon fontSize="small" />
                   </Box>
@@ -132,14 +135,14 @@ function HeaderMenu() {
         <MenuItem sx={{ px: 3 }} component={Link} href="/">
           Overview
         </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/tabs">
-          Tabs
+        <MenuItem sx={{ px: 3 }} component={Link} href="/status/comming-soon">
+          Sections
         </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/cards">
-          Cards
+        <MenuItem sx={{ px: 3 }} component={Link} href="/status/comming-soon">
+          Services
         </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/modals">
-          Modals
+        <MenuItem sx={{ px: 3 }} component={Link} href="/status/comming-soon">
+          Rôles
         </MenuItem>
       </Menu>
     </>

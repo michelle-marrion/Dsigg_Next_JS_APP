@@ -68,7 +68,24 @@ function Header() {
         alignItems="center"
         spacing={2}
       >
-        <HeaderMenu />
+        <Box
+           component="span"
+           sx={{
+             ml: 2,
+             display: { lg: '', xs: 'inline-block' }
+           }}
+        >
+          <Tooltip arrow title="Menu">
+            <IconButton color="primary" onClick={toggleSidebar}>
+                {!sidebarToggle ? (
+                  <MenuTwoToneIcon fontSize="small" />
+                ) : (
+                  <CloseTwoToneIcon fontSize="small" />
+                )}
+            </IconButton>
+          </Tooltip>
+        </Box>
+        <HeaderMenu />   
       </Stack>
       <Box display="flex" alignItems="center">
         <HeaderButtons />

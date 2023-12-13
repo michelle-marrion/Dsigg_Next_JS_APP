@@ -163,7 +163,7 @@ function TopBarContent() {
                   /> 
                 </ListItem>
                 </NextLink>
-                <NextLink href="/dashboards/crypto">   
+                <NextLink href="/dashboards/home">   
                 <ListItem button>
                   <ListItemIconWrapper>
                     <HomeRoundedIcon /> 

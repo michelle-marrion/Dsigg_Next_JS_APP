@@ -1,38 +1,75 @@
-import { useContext } from 'react';
-import { useRouter } from 'next/router';
-
+import { useState, SyntheticEvent } from 'react';
 import {
-  ListSubheader,
-  alpha,
   Box,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
   List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
   styled,
-  Button,
-  ListItem
 } from '@mui/material';
-import NextLink from 'next/link';
-import { SidebarContext } from 'src/app/components/widgets/contexts/SidebarContext';
 
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
-import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
-import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
-import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
-import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
-import BallotTwoToneIcon from '@mui/icons-material/BallotTwoTone';
-import BeachAccessTwoToneIcon from '@mui/icons-material/BeachAccessTwoTone';
-import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
-import FilterVintageTwoToneIcon from '@mui/icons-material/FilterVintageTwoTone';
-import HowToVoteTwoToneIcon from '@mui/icons-material/HowToVoteTwoTone';
-import LocalPharmacyTwoToneIcon from '@mui/icons-material/LocalPharmacyTwoTone';
-import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone';
+/**Import Icon */
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+
 import CheckBoxTwoToneIcon from '@mui/icons-material/CheckBoxTwoTone';
-import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwoTone';
-import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
-import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
+import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
+import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwoTone';
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
+import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone';
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
+import DisplaySettingsRoundedIcon from '@mui/icons-material/DisplaySettingsRounded';
+import WidgetsRoundedIcon from '@mui/icons-material/WidgetsRounded';
+import BallotTwoToneIcon from '@mui/icons-material/BallotTwoTone';
+import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import NextLink from 'next/link';
 
+const ListItemIconWrapper = styled(ListItemIcon)(
+  ({ theme }) => `
+        min-width: 36px;
+        color: ${theme.colors.primary.light};
+`
+);
+
+const AccordionSummaryWrapper = styled(AccordionSummary)(
+  ({ theme }) => `
+        &.Mui-expanded {
+          min-height: 48px;
+        }
+
+        .MuiAccordionSummary-content.Mui-expanded {
+          margin: 12px 0;
+        }
+
+        .MuiSvgIcon-root {
+          transition: ${theme.transitions.create(['color'])};
+        }
+
+        &.MuiButtonBase-root {
+
+          margin-bottom: ${theme.spacing(0.5)};
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          &.Mui-expanded,
+          &:hover {
+            background: ${theme.colors.alpha.black[10]};
+
+            .MuiSvgIcon-root {
+              color: ${theme.colors.primary.main};
+            }
+          }
+        }
+`
+);
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
@@ -53,490 +90,261 @@ const MenuWrapper = styled(Box)(
     }
 `
 );
-
-const SubMenuWrapper = styled(Box)(
-  ({ theme }) => `
-    .MuiList-root {
-
-      .MuiListItem-root {
-        padding: 1px 0;
-
-        .MuiBadge-root {
-          position: absolute;
-          right: ${theme.spacing(3.2)};
-
-          .MuiBadge-standard {
-            background: ${theme.colors.primary.main};
-            font-size: ${theme.typography.pxToRem(10)};
-            font-weight: bold;
-            text-transform: uppercase;
-            color: ${theme.palette.primary.contrastText};
-          }
-        }
-    
-        .MuiButton-root {
-          display: flex;
-          color: ${theme.colors.alpha.trueWhite[70]};
-          background-color: transparent;
-          width: 100%;
-          justify-content: flex-start;
-          padding: ${theme.spacing(1.2, 3)};
-
-          .MuiButton-startIcon,
-          .MuiButton-endIcon {
-            transition: ${theme.transitions.create(['color'])};
-
-            .MuiSvgIcon-root {
-              font-size: inherit;
-              transition: none;
-            }
-          }
-
-          .MuiButton-startIcon {
-            color: ${theme.colors.alpha.trueWhite[30]};
-            font-size: ${theme.typography.pxToRem(20)};
-            margin-right: ${theme.spacing(1)};
-          }
-          
-          .MuiButton-endIcon {
-            color: ${theme.colors.alpha.trueWhite[50]};
-            margin-left: auto;
-            opacity: .8;
-            font-size: ${theme.typography.pxToRem(20)};
-          }
-
-          &.active,
-          &:hover {
-            background-color: ${alpha(theme.colors.alpha.trueWhite[100], 0.06)};
-            color: ${theme.colors.alpha.trueWhite[100]};
-
-            .MuiButton-startIcon,
-            .MuiButton-endIcon {
-              color: ${theme.colors.alpha.trueWhite[100]};
-            }
-          }
-        }
-
-        &.Mui-children {
-          flex-direction: column;
-
-          .MuiBadge-root {
-            position: absolute;
-            right: ${theme.spacing(7)};
-          }
-        }
-
-        .MuiCollapse-root {
-          width: 100%;
-
-          .MuiList-root {
-            padding: ${theme.spacing(1, 0)};
-          }
-
-          .MuiListItem-root {
-            padding: 1px 0;
-
-            .MuiButton-root {
-              padding: ${theme.spacing(0.8, 3)};
-
-              .MuiBadge-root {
-                right: ${theme.spacing(3.2)};
-              }
-
-              &:before {
-                content: ' ';
-                background: ${theme.colors.alpha.trueWhite[100]};
-                opacity: 0;
-                transition: ${theme.transitions.create([
-                  'transform',
-                  'opacity'
-                ])};
-                width: 6px;
-                height: 6px;
-                transform: scale(0);
-                transform-origin: center;
-                border-radius: 20px;
-                margin-right: ${theme.spacing(1.8)};
-              }
-
-              &.active,
-              &:hover {
-
-                &:before {
-                  transform: scale(1);
-                  opacity: 1;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-`
-);
-
 function SidebarMenu() {
-  const { closeSidebar } = useContext(SidebarContext);
-  const router = useRouter();
-  const currentRoute = router.pathname;
+  const [expanded, setExpanded] = useState<string | false>('section1');
+
+  const handleChange =
+    (section: string) => (_event: SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? section : false);
+    };
+
+    //const router = useRouter();
+    //const currentRoute = router.pathname;
 
   return (
     <>
       <MenuWrapper>
-        <List component="div">
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
+          <Accordion
+            expanded={expanded === 'section1'}
+            onChange={handleChange('section1')}
+            /* style={{backgroundColor:'#1b365f',
+                    color:'white'        
+          }}
+             */
+          >
+            <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="h5" >Home</Typography>
+            </AccordionSummaryWrapper>
+            <AccordionDetails
+              sx={{
+                p: 0
+              }}
+            >
+              <List component="nav" style={{margin:5}}>
                 <NextLink href="/" passHref>
-                  <Button
-                    className={currentRoute === '="/' ? 'active' : ''}
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<DesignServicesTwoToneIcon />}
-                  >
-                    Overview
-                  </Button>
+                <ListItem button
+                >
+                  <ListItemIconWrapper>
+                    <ArrowBackIosRoundedIcon /> 
+                  </ListItemIconWrapper>
+                  <ListItemText
+                    primary="Overview"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  /> 
+                </ListItem>
                 </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Dashboards
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/dashboards/crypto" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/dashboards/crypto' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<BrightnessLowTwoToneIcon />}
-                  >
-                    Cryptocurrency
-                  </Button>
+                <NextLink href="/dashboards/home">   
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <HomeRoundedIcon /> 
+                  </ListItemIconWrapper>
+                    
+                  <ListItemText
+                    primary="Dashboard"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                </ListItem>
                 </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/applications/messenger" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/applications/messenger' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<MmsTwoToneIcon />}
-                  >
-                    Messenger
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Management
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/management/transactions" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/management/transactions'
-                        ? 'active'
-                        : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<TableChartTwoToneIcon />}
-                  >
-                    Transactions List
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Accounts
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
+              </List>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === 'section2'}
+            onChange={handleChange('section2')}     
+          >
+            <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
+            {/*  <Button startIcon={<HomeRoundedIcon />} disabled>
+              
+             </Button> */}
+              <Typography variant="h5" >Accounts</Typography>
+            </AccordionSummaryWrapper>
+            <AccordionDetails
+              sx={{
+                p: 0
+              }}
+            >
+              <List component="nav" style={{margin:5}}>
                 <NextLink href="/management/profile" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/management/profile' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<AccountCircleTwoToneIcon />}
-                  >
-                    User Profile
-                  </Button>
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <AccountCircleTwoToneIcon /> 
+                  </ListItemIconWrapper>
+                  <ListItemText
+                    primary="User Profil"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  /> 
+                </ListItem>
                 </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/management/profile/settings" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/management/profile/settings'
-                        ? 'active'
-                        : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<DisplaySettingsTwoToneIcon />}
-                  >
-                    Account Settings
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Components
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/components/buttons" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/buttons' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<BallotTwoToneIcon />}
-                  >
-                    Buttons
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/components/modals" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/modals' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<BeachAccessTwoToneIcon />}
-                  >
-                    Modals
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/components/accordions" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/accordions' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<EmojiEventsTwoToneIcon />}
-                  >
-                    Accordions
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/components/tabs" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/tabs' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<FilterVintageTwoToneIcon />}
-                  >
-                    Tabs
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/components/badges" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/badges' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<HowToVoteTwoToneIcon />}
-                  >
-                    Badges
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/components/tooltips" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/tooltips' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<LocalPharmacyTwoToneIcon />}
-                  >
-                    Tooltips
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/components/avatars" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/avatars' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<RedeemTwoToneIcon />}
-                  >
-                    Avatars
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/components/cards" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/cards' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<SettingsTwoToneIcon />}
-                  >
-                    Cards
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/components/forms" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/components/forms' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<TrafficTwoToneIcon />}
-                  >
-                    Forms
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Extra Pages
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/status/404" passHref>
-                  <Button
-                    className={currentRoute === '/status/404' ? 'active' : ''}
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<CheckBoxTwoToneIcon />}
-                  >
-                    Error 404
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <DisplaySettingsRoundedIcon/>
+                  </ListItemIconWrapper>
+                  <NextLink href="/management/profile/settings">     
+                  <ListItemText
+                    primary="Account Settings"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                   
+                  </NextLink>
+                </ListItem>
+              </List>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === 'section3'}
+            onChange={handleChange('section3')}
+          >
+            <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="h5">Administration</Typography>
+            </AccordionSummaryWrapper>
+            <AccordionDetails
+              sx={{
+                p: 0
+              }}
+            >
+              <List component="nav">
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <AccountCircleTwoToneIcon />
+                  </ListItemIconWrapper>
+                  <ListItemText
+                    primary="Utilisateurs"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                </ListItem>
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <CancelTwoToneIcon />
+                  </ListItemIconWrapper>
+                  <ListItemText
+                    primary="Roles"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                </ListItem>
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <BlockTwoToneIcon />
+                  </ListItemIconWrapper>
+                  <ListItemText
+                    primary="Block user"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                </ListItem>
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <WidgetsRoundedIcon />
+                  </ListItemIconWrapper>
+                  <ListItemText
+                    primary="Gerer les Menu"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                    secondary="All Menu"
+                    secondaryTypographyProps={{ variant: 'subtitle1' }}
+                  />
+                </ListItem>
+              </List>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === 'section4'}
+            onChange={handleChange('section4')}     
+          >
+            <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="h5" >Extra Pages</Typography>
+            </AccordionSummaryWrapper>
+            <AccordionDetails
+              sx={{
+                p: 0
+              }}
+            >
+              <List component="nav" style={{margin:5}}>
                 <NextLink href="/status/500" passHref>
-                  <Button
-                    className={currentRoute === '/status/500' ? 'active' : ''}
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<CameraFrontTwoToneIcon />}
-                  >
-                    Error 500
-                  </Button>
+                <ListItem button
+                >
+                  <ListItemIconWrapper>
+                    <CameraFrontTwoToneIcon />
+                  </ListItemIconWrapper>
+                  <ListItemText
+                    primary="Error 505"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  /> 
+                </ListItem>
                 </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/status/coming-soon" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/status/coming-soon' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<ChromeReaderModeTwoToneIcon />}
-                  >
-                    Coming Soon
-                  </Button>
+                <ListItem button>
+                  <ListItemIconWrapper>
+                     <CheckBoxTwoToneIcon />
+                  </ListItemIconWrapper>
+                  <NextLink href="/status/404">     
+                  <ListItemText
+                    primary="Error 404"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                  </NextLink>
+                </ListItem>
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <ChromeReaderModeTwoToneIcon />
+                  </ListItemIconWrapper>
+                  <NextLink href="/status/coming-soon">     
+                  <ListItemText
+                    primary="Coming Soon"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                  </NextLink>
+                </ListItem>
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <WorkspacePremiumTwoToneIcon />
+                  </ListItemIconWrapper>
+                  <NextLink href="/status/maintenance">     
+                  <ListItemText
+                    primary="Maintenance"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                  </NextLink>
+                </ListItem>
+              </List>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === 'section5'}
+            onChange={handleChange('section5')}     
+          >
+            <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="h5" >Forms Components</Typography>
+            </AccordionSummaryWrapper>
+            <AccordionDetails
+              sx={{
+                p: 0
+              }}
+            >
+              <List component="nav" style={{margin:5}}>
+                <NextLink href="/components/buttons" passHref        
+                >
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <BallotTwoToneIcon />
+                  </ListItemIconWrapper>
+                  <ListItemText
+                    primary="Buttons"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  /> 
+                </ListItem>
                 </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/status/maintenance" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/status/maintenance' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<WorkspacePremiumTwoToneIcon />}
-                  >
-                    Maintenance
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
+                <ListItem button>
+                  <ListItemIconWrapper>
+                    <TrafficTwoToneIcon/>
+                  </ListItemIconWrapper>
+                  <NextLink href="/components/forms">     
+                  <ListItemText
+                    primary="Forms"
+                    primaryTypographyProps={{ variant: 'h5' }}
+                  />
+                  </NextLink>
+                </ListItem>
+              </List>
+            </AccordionDetails>
+          </Accordion>
+          
       </MenuWrapper>
     </>
   );
