@@ -9,6 +9,8 @@
 </h1>
 <div align="center">
 
+![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+</div>
 ---
 
 <h2>
