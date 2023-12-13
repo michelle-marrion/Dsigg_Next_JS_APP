@@ -1,12 +1,6 @@
-import { Box, Container, Link, Typography, styled } from '@mui/material';
+import { Link, Typography, } from '@mui/material';
 
 import 'src/styles/globals.css' ;
-
-const FooterWrapper = styled(Container)(
-  ({ theme }) => `
-        margin-top: ${theme.spacing(4)};
-`
-);
 
 const Footer = (props) =>{
   return (
