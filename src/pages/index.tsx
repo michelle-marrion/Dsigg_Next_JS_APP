@@ -8,7 +8,7 @@ import Head from 'next/head';
 import Logo from 'src/app/components/shared/LogoSign';
 import Hero from 'src/app/components/pages/Overview/Hero';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-
+import Footer from '@/app/components/shared/Footer';
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
   width: 100%;
@@ -60,31 +60,7 @@ function Overview() {
         </Container>
       </HeaderWrapper>
       <Hero/>
-      <Container 
-        maxWidth="lg" 
-        sx={{ mt: 8 }} 
-        style={{
-          position:'fixed',
-          left : 0,
-          bottom: 10,
-          width: 'auto',
-          color : 'white',
-      
-        }}>
-          <Box alignItems="center">
-            <Typography textAlign="center" variant="subtitle1" >
-            Edité par {' '}
-          <Link
-            href="https://aglgroup.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            aglgroup.com
-          </Link>
-        </Typography>
-          </Box>
-        
-      </Container>
+      <Footer />
     </OverviewWrapper>
   );
 }
