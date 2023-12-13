@@ -121,18 +121,6 @@ function SidebarMenu() {
               }}
             >
               <List component="nav" style={{margin:5}}>
-                <NextLink href="/" passHref>
-                <ListItem button
-                >
-                  <ListItemIconWrapper>
-                    <ArrowBackIosRoundedIcon /> 
-                  </ListItemIconWrapper>
-                  <ListItemText
-                    primary="Overview"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  /> 
-                </ListItem>
-                </NextLink>
                 <NextLink href="/dashboards/home">   
                 <ListItem button>
                   <ListItemIconWrapper>
