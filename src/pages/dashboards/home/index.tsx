@@ -2,16 +2,11 @@ import Head from 'next/head';
 
 import SidebarLayout from '@/app/components/widgets/layouts/SidebarLayout';
 
-import PageHeader from '@/app/components/pages/Dashboards/Crypto/PageHeader';
+import PageHeader from '@/app/components/pages/Dashboards/Home/PageHeader';
 import PageTitleWrapper from '@/app/components/shared/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from '@/app/components/shared/Footer';
-
-import AccountBalance from '@/app/components/pages/Dashboards/Crypto/AccountBalance';
-import Wallets from '@/app/components/pages/Dashboards/Crypto/Wallets';
-import AccountSecurity from '@/app/components/pages/Dashboards/Crypto/AccountSecurity';
-import WatchList from '@/app/components/pages/Dashboards/Crypto/WatchList';
-
+import AccountBalance from '@/app/components/pages/Dashboards/Home/AccountBalance';
 function DashboardCrypto() {
   return (
     <>
@@ -21,6 +16,7 @@ function DashboardCrypto() {
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
+      {/* <TopBarContent/> */}
       <Container maxWidth="lg">
         <Grid
           container
@@ -31,15 +27,6 @@ function DashboardCrypto() {
         >
           <Grid item xs={12}>
             <AccountBalance />
-          </Grid>
-          <Grid item lg={8} xs={12}>
-            <Wallets />
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <AccountSecurity />
-          </Grid>
-          <Grid item xs={12}>
-            <WatchList />
           </Grid>
         </Grid>
       </Container>
