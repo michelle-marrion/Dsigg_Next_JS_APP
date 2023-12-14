@@ -14,7 +14,6 @@ import {
 
 /**Import Icon */
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import CheckBoxTwoToneIcon from '@mui/icons-material/CheckBoxTwoTone';
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
@@ -98,19 +97,12 @@ function SidebarMenu() {
       setExpanded(isExpanded ? section : false);
     };
 
-    //const router = useRouter();
-    //const currentRoute = router.pathname;
-
   return (
     <>
       <MenuWrapper>
           <Accordion
             expanded={expanded === 'section1'}
             onChange={handleChange('section1')}
-            /* style={{backgroundColor:'#1b365f',
-                    color:'white'        
-          }}
-             */
           >
             <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
               <Typography variant="h5" >Home</Typography>

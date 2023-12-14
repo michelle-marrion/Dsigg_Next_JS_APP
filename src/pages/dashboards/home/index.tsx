@@ -3,8 +3,6 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import SidebarLayout from '@/app/components/widgets/layouts/SidebarLayout';
 
-import PageHeader from '@/app/components/pages/Dashboards/Home/PageHeader';
-import PageTitleWrapper from '@/app/components/shared/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from '@/app/components/shared/Footer';
 import RecentOrders from '@/app/components/pages/Management/Transactions/RecentOrders'
@@ -57,9 +55,6 @@ function DashboardCrypto() {
         <title>Crypto Dashboard</title>
       </Head>
       <NavBar/> 
-      <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper>
      
       {/* <TopBarContent/> */}
       <Container maxWidth="lg">

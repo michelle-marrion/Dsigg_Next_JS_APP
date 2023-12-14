@@ -14,6 +14,7 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 
 const ListWrapper = styled(Box)(
   ({ theme }) => `
+  padding :-100px;
         .MuiTouchRipple-root {
             display: none;
         }
