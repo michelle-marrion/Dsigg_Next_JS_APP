@@ -87,9 +87,6 @@ const AccordionSummaryWrapper = styled(AccordionSummary)(
 
 function TopBarContent() {
   const theme = useTheme();
-  const { closeSidebar } = useContext(SidebarContext);
-  const router = useRouter();
-  const currentRoute = router.pathname;
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
