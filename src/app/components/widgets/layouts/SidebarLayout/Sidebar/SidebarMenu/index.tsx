@@ -290,7 +290,7 @@ function SidebarMenu() {
             onChange={handleChange('section5')}     
           >
             <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h5" >Forms Components</Typography>
+              <Typography variant="h5" >Components</Typography>
             </AccordionSummaryWrapper>
             <AccordionDetails
               sx={{

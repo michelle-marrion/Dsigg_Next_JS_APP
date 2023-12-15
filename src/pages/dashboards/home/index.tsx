@@ -3,13 +3,17 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import SidebarLayout from '@/app/components/widgets/layouts/SidebarLayout';
 
-import { Container, Grid } from '@mui/material';
+import { Container, Grid} from '@mui/material';
 import Footer from '@/app/components/shared/Footer';
 import RecentOrders from '@/app/components/pages/Management/Transactions/RecentOrders'
+import ProductTable from '@/app/components/pages/Management/Transactions/Tables';
+import PageTitleWrapper from '@/app/components/shared/PageTitleWrapper';
+import PageTitle from '@/app/components/shared/PageTitle';
 
 /**Import Icon */
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
+import CheckboxDropdown from '@/app/components/pages/Management/Transactions/dropdown'
 function NavBar() {
   const router = useRouter()
   return (
@@ -54,8 +58,15 @@ function DashboardCrypto() {
       <Head>
         <title>Crypto Dashboard</title>
       </Head>
-      <NavBar/> 
-     
+      {/* <NavBar/> */}
+      <PageTitleWrapper>
+        <PageTitle
+          heading="Tables of Orders"
+          subHeading=""
+          docs="https://material-ui.com/components/buttons/"
+          text_b='New'
+        />
+      </PageTitleWrapper> 
       {/* <TopBarContent/> */}
       <Container maxWidth="lg">
         <Grid
@@ -67,6 +78,14 @@ function DashboardCrypto() {
         >
           <Grid item xs={12}>
             <RecentOrders />
+          </Grid>
+        </Grid>
+      </Container>
+      <Container>
+        <Grid>
+          <Grid>
+            <ProductTable/>
+            {/* <CheckboxDropdown/> */}
           </Grid>
         </Grid>
       </Container>

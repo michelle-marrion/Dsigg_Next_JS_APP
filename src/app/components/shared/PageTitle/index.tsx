@@ -7,12 +7,14 @@ interface PageTitleProps {
   heading?: string;
   subHeading?: string;
   docs?: string;
+  text_b? :string
 }
 
 const PageTitle: FC<PageTitleProps> = ({
   heading = '',
   subHeading = '',
   docs = '',
+  text_b = '',
   ...rest
 }) => {
   return (
@@ -37,7 +39,7 @@ const PageTitle: FC<PageTitleProps> = ({
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
-          {heading} Documentation
+          {text_b}
         </Button>
       </Grid>
     </Grid>
