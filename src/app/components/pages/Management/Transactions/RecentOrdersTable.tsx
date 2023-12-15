@@ -1,12 +1,11 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState} from 'react';
+import React from 'react';
 import { format } from 'date-fns';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
   Divider,
   Box,
-  FormControl,
   InputLabel,
   Card,
   Checkbox,
@@ -22,13 +21,18 @@ import {
   MenuItem,
   Typography,
   useTheme,
-  CardHeader
+  CardHeader,
+  Input,
+  Container, Grid,
+  Menu,
 } from '@mui/material';
 
 import Label from '@/app/components/shared/Label';
 import { CryptoOrder, CryptoOrderStatus } from '@/data/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import ViewWeekRoundedIcon from '@mui/icons-material/ViewWeekRounded';
 import BulkActions from './BulkActions';
 
 interface RecentOrdersTableProps {
@@ -85,9 +89,35 @@ const applyPagination = (
 };
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
+//Select Columns to display
+  const [selectedColumns, setSelectedColumns] = useState(Object.keys(cryptoOrders[0]));
+  const handleColumnSelection = (column) => {
+    setSelectedColumns(prev => {
+      if (prev.includes(column)) {
+        return prev.filter(c => c !== column);
+      } else {
+        return [...prev, column];
+      }
+    });
+  };
+/*   const FilterList =()=>
+  {
+    {Object.keys(cryptoOrders[0]).map((column) => (
+      <div key={column}>
+        <input
+          type="checkbox"
+          checked={selectedColumns.includes(column)}
+          onChange={() => handleColumnSelection(column)}
+        />
+        <label>{column}</label>
+      </div>
+    ))}
+  } */
+  //
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
+
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
@@ -136,6 +166,84 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         : []
     );
   };
+function FilterTable()
+{
+  //Filtrer les lignes du tableaux en fonctions de leur status
+  return(
+    <>
+     
+        <InputLabel>Status</InputLabel>
+          <Select
+            value={filters.status || 'all'}
+            onChange={handleStatusChange}
+            label="Status"
+            autoWidth
+          >
+            {statusOptions.map((statusOption) => (
+              <MenuItem key={statusOption.id} value={statusOption.id}>
+                {statusOption.name}
+              </MenuItem>
+            ))}
+            </Select>
+    </>
+  );
+}
+function ColonnesAAfficher ()
+{
+  //Selectionner les colonnes à affichés
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [checked, setChecked] = React.useState([0]);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
+  return(
+    <>  
+      <button onClick={handleClick}>
+      <ViewWeekRoundedIcon/>
+      </button>
+      <Menu
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        {Object.keys(cryptoOrders[0]).filter(column => column !== 'id').map((column) => (
+          // .filter(column => column = 'id') selectionner les colonnes en dehors de la colonne id
+          <MenuItem key={column} onClick={handleClose}>
+            <Checkbox
+              edge="start"
+              checked={selectedColumns.includes(column)}
+              tabIndex={-1}
+              disableRipple
+              onChange={() => handleColumnSelection(column)}
+              inputProps={{ 'aria-labelledby': `checkbox-list-label-${column}` }}
+              onClick={handleToggle(column)} 
+            />
+           <label>{column}</label>
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
+  );
+}
 
   const handleSelectOneCryptoOrder = (
     _event: ChangeEvent<HTMLInputElement>,
@@ -174,7 +282,50 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     selectedCryptoOrders.length === cryptoOrders.length;
   const theme = useTheme();
 
+ //Search In table 
+  // Les colonnes pour
+  const [searchText, setSearchText] = useState('');
+  const [rows, setRows] = useState(cryptoOrders);
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+    const filteredRows = cryptoOrders.filter((row) =>
+      row.Details.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.ID_Account.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.Source.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.amount.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.status.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setRows(filteredRows);
+  };
+
   return (
+    <>
+    {/** Espace de recherche */}
+    <Container
+      maxWidth="lg" 
+      style={{margin:"20px"}}
+    >
+      <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="stretch"
+      spacing={3}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid gray', borderRadius: '5px', padding: '5px', width: '200px'}}>
+          <SearchRoundedIcon style={{ color: 'gray' }} />
+          <Input
+            disableUnderline
+            placeholder="Rechercher"
+            value={searchText}
+            onChange={handleSearchChange}
+            style={{ marginLeft: '5px' }}
+          />
+        </div>
+      
+      </Grid>  
+    </Container>
+    {/** Contenue du tableau */}
     <Card>
       {selectedBulkActions && (
         <Box flex={1} p={2}>
@@ -182,31 +333,23 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         </Box>
       )}
       {!selectedBulkActions && (
+        
         <CardHeader
           action={
-            <Box width={150}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>Status</InputLabel>
-                <Select
-                  value={filters.status || 'all'}
-                  onChange={handleStatusChange}
-                  label="Status"
-                  autoWidth
-                >
-                  {statusOptions.map((statusOption) => (
-                    <MenuItem key={statusOption.id} value={statusOption.id}>
-                      {statusOption.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+            <>
+            <Box sx={{ mr: 1, }} >
+              <FilterTable />
+              <Box sx={{ mx: 0.5 }} component="span">
+               <ColonnesAAfficher/>
+              </Box>
             </Box>
+            </>
           }
           title="Recent Orders"
         />
       )}
       <Divider />
-      <TableContainer>
+ {/*      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -218,12 +361,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell>Order Details</TableCell>
-              <TableCell>Order ID</TableCell>
-              <TableCell>Source</TableCell>
-              <TableCell align="right">Amount</TableCell>
-              <TableCell align="right">Status</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              
+             {selectedColumns.filter(column =>column !== 'id').map(  
+              (column) => (
+              <TableCell key={column}>{column}</TableCell>
+            ))}
+              <TableCell align="right">Actions</TableCell> 
             </TableRow>
           </TableHead>
           <TableBody>
@@ -232,81 +375,44 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                 cryptoOrder.id
               );
               return (
+              <>
                 <TableRow
                   hover
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
                 >
+                  
+            {rows.map((row)=>
+
+              <TableRow
+                hover
+                key={row.id}
+                selected={isCryptoOrderSelected}
+              >
                   <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      checked={isCryptoOrderSelected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
-                      }
-                      value={isCryptoOrderSelected}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.orderDetails}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.orderID}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.sourceName}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {cryptoOrder.sourceDesc}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.amountCrypto}
-                      {cryptoOrder.cryptoCurrency}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {numeral(cryptoOrder.amount).format(
-                        `${cryptoOrder.currency}0,0.00`
-                      )}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    {getStatusLabel(cryptoOrder.status)}
-                  </TableCell>
-                  <TableCell align="right">
+                      <Checkbox
+                        color="primary"
+                        checked={isCryptoOrderSelected}
+                        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                          handleSelectOneCryptoOrder(event, cryptoOrder.id)
+                        }
+                        value={isCryptoOrderSelected}
+                      />
+                  </TableCell>                  
+                  {selectedColumns.map((column) => (
+                    <>
+                      <TableCell key={column}>
+                        <Typography variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap>
+                          {row[column]}
+                        </Typography>
+                      </TableCell>
+                    </>   
+                ))}
+                <TableCell align="right">
                     <Tooltip title="Edit Order" arrow>
                       <IconButton
                         sx={{
@@ -334,12 +440,111 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       </IconButton>
                     </Tooltip>
                   </TableCell>
-                </TableRow>
+              </TableRow>
+            )}
+        </TableRow>
+        </>        
               );
             })}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
+      <TableContainer>
+  <Table>
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            checked={selectedAllCryptoOrders}
+            indeterminate={selectedSomeCryptoOrders}
+            onChange={handleSelectAllCryptoOrders}
+          />
+        </TableCell>
+        {selectedColumns.filter(column => column !== 'id').map((column) => (
+          <TableCell key={column}>{column}</TableCell>
+        ))}
+        <TableCell align="right">Actions</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {paginatedCryptoOrders.map((cryptoOrder, index) => {
+        const isCryptoOrderSelected = selectedCryptoOrders.includes(cryptoOrder.id);
+        const row = rows[index];
+
+        return (
+          <React.Fragment key={cryptoOrder.id}>
+            <TableRow hover selected={isCryptoOrderSelected}>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  color="primary"
+                  checked={isCryptoOrderSelected}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                    handleSelectOneCryptoOrder(event, cryptoOrder.id)
+                  }
+                  value={isCryptoOrderSelected}
+                />
+              </TableCell>
+              {selectedColumns.filter(column => column !== 'id').map((column) => (
+                <TableCell key={column}>
+                  {column !== 'status' ? ( 
+                    // Veriffier si le champ à afficher n'est pas le 'status'
+                    column !== 'Date' ?(// Veriffier si le champ à afficher n'est pas le 'Date'
+                    row && column && row[column]?(
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {row[column]}
+                      </Typography>
+                      ): null
+                  ): 
+                  // si le champ à afficher est le 'Date', formater la date
+                  format(row['Date'], 'dd MMMM yyyy') 
+                  ):(
+                     // si le champ à afficher est le 'status', appliquer la fonction getStatusLabel aux différentes valeurs du champ
+                  row && row['status'] ? getStatusLabel(row['status']) : null)} 
+                </TableCell>
+              ))}
+              <TableCell align="right">
+                <Tooltip title="Edit Order" arrow>
+                  <IconButton
+                    sx={{
+                      '&:hover': {
+                        background: theme.colors.primary.lighter
+                      },
+                      color: theme.palette.primary.main
+                    }}
+                    color="inherit"
+                    size="small"
+                  >
+                    <EditTwoToneIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete Order" arrow>
+                  <IconButton
+                    sx={{
+                      '&:hover': { background: theme.colors.error.lighter },
+                      color: theme.palette.error.main
+                    }}
+                    color="inherit"
+                    size="small"
+                  >
+                    <DeleteTwoToneIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
+            </TableRow>
+          </React.Fragment>
+        );
+      })}
+    </TableBody>
+  </Table>
+</TableContainer>
+
       <Box p={2}>
         <TablePagination
           component="div"
@@ -352,6 +557,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         />
       </Box>
     </Card>
+    </>
   );
 };
 
