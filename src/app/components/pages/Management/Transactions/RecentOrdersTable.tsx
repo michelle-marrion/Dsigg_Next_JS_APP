@@ -1,5 +1,6 @@
 import { FC, ChangeEvent, useState} from 'react';
 import React from 'react';
+import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -488,6 +489,7 @@ function ColonnesAAfficher ()
                 <TableCell key={column}>
                   {column !== 'status' ? ( 
                     // Veriffier si le champ à afficher n'est pas le 'status'
+                    column !== 'Date' ?(// Veriffier si le champ à afficher n'est pas le 'Date'
                     row && column && row[column]?(
                       <Typography
                         variant="body1"
@@ -499,8 +501,12 @@ function ColonnesAAfficher ()
                         {row[column]}
                       </Typography>
                       ): null
-                  ): // si le champ à afficher est le 'status', appliquer la fonction getStatusLabel aux différentes valeurs du champ
-                  row && row['status'] ? getStatusLabel(row['status']) : null} 
+                  ): 
+                  // si le champ à afficher est le 'Date', formater la date
+                  format(row['Date'], 'dd MMMM yyyy') 
+                  ):(
+                     // si le champ à afficher est le 'status', appliquer la fonction getStatusLabel aux différentes valeurs du champ
+                  row && row['status'] ? getStatusLabel(row['status']) : null)} 
                 </TableCell>
               ))}
               <TableCell align="right">
