@@ -55,8 +55,9 @@
     - createEmotionCache
 ## Interfaces
 - Home Page
-![Home Page](public/images/maquettes/home_page.jpeg)
-
+![Home Page](public/images/maquettes/home_page_.jpeg)
+-Menu
+![Menu](public/images/maquettes/menu_display.png)
 ## Quick Start
 - Make sure you have the latest stable versions for Node.js and NPM installed
 - Clone repository: <code>git clone https://agl-dev@dev.azure.com/agl-dev/DSI-AGLGG/_git/AZR_DSIGG_NEXT_JS_APP_Clean</code>
