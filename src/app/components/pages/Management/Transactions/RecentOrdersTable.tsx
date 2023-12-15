@@ -1,6 +1,5 @@
 import { FC, ChangeEvent, useState} from 'react';
 import React from 'react';
-import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -22,12 +21,8 @@ import {
   Typography,
   useTheme,
   CardHeader,
-  CardContent,
   Input,
   Container, Grid,
-  List,
-  ListItem,
-  ListItemText,
   Menu,
 } from '@mui/material';
 
@@ -35,12 +30,9 @@ import Label from '@/app/components/shared/Label';
 import { CryptoOrder, CryptoOrderStatus } from '@/data/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ViewWeekRoundedIcon from '@mui/icons-material/ViewWeekRounded';
 import BulkActions from './BulkActions';
-import Link from 'src/app/components/shared/Link';
-import HeaderFilter from './FilterTables';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -195,7 +187,7 @@ function FilterTable()
     </>
   );
 }
-function SelectColumns ()
+function ColonnesAAfficher ()
 {
   //Selectionner les colonnes à affichés
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -292,22 +284,22 @@ function SelectColumns ()
  //Search In table 
   // Les colonnes pour
   const [searchText, setSearchText] = useState('');
-    const [rows, setRows] = useState(cryptoOrders);
-  
-    const handleSearchChange = (event) => {
-      setSearchText(event.target.value);
-      const filteredRows = cryptoOrders.filter((row) =>
-        row.Details.toLowerCase().includes(event.target.value.toLowerCase()) ||
-        row.ID_Account.toLowerCase().includes(event.target.value.toLowerCase()) ||
-        row.Source.toLowerCase().includes(event.target.value.toLowerCase()) ||
-        row.amount.toLowerCase().includes(event.target.value.toLowerCase()) ||
-        row.status.toLowerCase().includes(event.target.value.toLowerCase())
-      );
-      setRows(filteredRows);
-    };
+  const [rows, setRows] = useState(cryptoOrders);
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+    const filteredRows = cryptoOrders.filter((row) =>
+      row.Details.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.ID_Account.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.Source.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.amount.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      row.status.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setRows(filteredRows);
+  };
 
   return (
     <>
+    {/** Espace de recherche */}
     <Container
       maxWidth="lg" 
       style={{margin:"20px"}}
@@ -319,7 +311,7 @@ function SelectColumns ()
       alignItems="stretch"
       spacing={3}
       >
-           <div style={{ display: 'flex', alignItems: 'center', border: '1px solid gray', borderRadius: '5px', padding: '5px', width: '200px'}}>
+        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid gray', borderRadius: '5px', padding: '5px', width: '200px'}}>
           <SearchRoundedIcon style={{ color: 'gray' }} />
           <Input
             disableUnderline
@@ -327,13 +319,12 @@ function SelectColumns ()
             value={searchText}
             onChange={handleSearchChange}
             style={{ marginLeft: '5px' }}
-            />
-          </div>
+          />
+        </div>
       
-      </Grid>
-   
-           
+      </Grid>  
     </Container>
+    {/** Contenue du tableau */}
     <Card>
       {selectedBulkActions && (
         <Box flex={1} p={2}>
@@ -348,7 +339,7 @@ function SelectColumns ()
             <Box sx={{ mr: 1, }} >
               <FilterTable />
               <Box sx={{ mx: 0.5 }} component="span">
-               <SelectColumns/>
+               <ColonnesAAfficher/>
               </Box>
             </Box>
             </>
@@ -495,17 +486,21 @@ function SelectColumns ()
               </TableCell>
               {selectedColumns.filter(column => column !== 'id').map((column) => (
                 <TableCell key={column}>
-                  {row && column && row[column]?(
-                  <Typography
-                    variant="body1"
-                    fontWeight="bold"
-                    color="text.primary"
-                    gutterBottom
-                    noWrap
-                  >
-                    {row[column]}
-                  </Typography>
-                  ): null}
+                  {column !== 'status' ? ( 
+                    // Veriffier si le champ à afficher n'est pas le 'status'
+                    row && column && row[column]?(
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {row[column]}
+                      </Typography>
+                      ): null
+                  ): // si le champ à afficher est le 'status', appliquer la fonction getStatusLabel aux différentes valeurs du champ
+                  row && row['status'] ? getStatusLabel(row['status']) : null} 
                 </TableCell>
               ))}
               <TableCell align="right">

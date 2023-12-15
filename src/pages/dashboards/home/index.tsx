@@ -6,14 +6,14 @@ import SidebarLayout from '@/app/components/widgets/layouts/SidebarLayout';
 import { Container, Grid} from '@mui/material';
 import Footer from '@/app/components/shared/Footer';
 import RecentOrders from '@/app/components/pages/Management/Transactions/RecentOrders'
-import ProductTable from '@/app/components/pages/Management/Transactions/Tables';
+//import ProductTable from '@/app/components/pages/Management/Transactions/Tables';
 import PageTitleWrapper from '@/app/components/shared/PageTitleWrapper';
 import PageTitle from '@/app/components/shared/PageTitle';
 
 /**Import Icon */
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
-import CheckboxDropdown from '@/app/components/pages/Management/Transactions/dropdown'
+//import CheckboxDropdown from '@/app/components/pages/Management/Transactions/dropdown'
 function NavBar() {
   const router = useRouter()
   return (
@@ -84,7 +84,7 @@ function DashboardCrypto() {
       <Container>
         <Grid>
           <Grid>
-            <ProductTable/>
+            {/* <ProductTable/> */}
             {/* <CheckboxDropdown/> */}
           </Grid>
         </Grid>
