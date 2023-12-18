@@ -1,38 +1,20 @@
-import { FC, ChangeEvent, useState} from 'react';
+import { FC, ChangeEvent, useState, useEffect} from 'react';
 import React from 'react';
 import { format } from 'date-fns';
 import PropTypes from 'prop-types';
-import {
-  Tooltip,
-  Divider,
-  Box,
-  InputLabel,
-  Card,
-  Checkbox,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableContainer,
-  Select,
-  MenuItem,
-  Typography,
-  useTheme,
-  CardHeader,
-  Input,
-  Container, Grid,
-  Menu,
+import 
+{ Tooltip, Divider, Box, InputLabel, Card, Checkbox, IconButton, Table, TableBody, 
+  TableCell, TableHead, TablePagination, TableRow, TableContainer,Select,
+  MenuItem, Typography, useTheme, CardHeader, Input, Container, Grid, Menu,
 } from '@mui/material';
-
-import Label from '@/app/components/shared/Label';
-import { CryptoOrder, CryptoOrderStatus } from '@/data/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ViewWeekRoundedIcon from '@mui/icons-material/ViewWeekRounded';
+
+//Import locaux 
+import Label from '@/app/components/shared/Label';
+import { CryptoOrder, CryptoOrderStatus } from '@/data/models/crypto_order';
 import BulkActions from './BulkActions';
 
 interface RecentOrdersTableProps {
@@ -41,11 +23,11 @@ interface RecentOrdersTableProps {
 }
 
 interface Filters {
-  status?: CryptoOrderStatus;
+  status?: CryptoOrderStatus | null;
 }
 
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
-  const map = {
+  const statusMap : Record <CryptoOrderStatus, {text:string;color:string}> ={
     failed: {
       text: 'Failed',
       color: 'error'
@@ -60,34 +42,39 @@ const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
     }
   };
 
-  const { text, color }: any = map[cryptoOrderStatus];
+  const { text, color }: any = statusMap[cryptoOrderStatus];
 
   return <Label color={color}>{text}</Label>;
 };
 
-const applyFilters = (
-  cryptoOrders: CryptoOrder[],
-  filters: Filters
-): CryptoOrder[] => {
+const applyFilters = (cryptoOrders: CryptoOrder[], filters: Filters): CryptoOrder[] => {
   return cryptoOrders.filter((cryptoOrder) => {
-    let matches = true;
-
-    if (filters.status && cryptoOrder.status !== filters.status) {
+    let matches  = true;
+   /*  return Object.entries(filters)
+    .every(([key, value]) =>
+    value ? cryptoOrder[key] ===value : true); */
+    if (filters.status && cryptoOrder.status !== filters.status)
+    {
       matches = false;
     }
-
-    return matches;
+    return matches
   });
 };
-
-const applyPagination = (
-  cryptoOrders: CryptoOrder[],
-  page: number,
-  limit: number
-): CryptoOrder[] => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
+// pAGINATION
+const applyPagination = ( cryptoOrders: CryptoOrder[], page: number, limit: number): CryptoOrder[] => {
+  const startIndex = page * limit ;
+  return cryptoOrders.slice(startIndex, startIndex + limit);
 };
-
+//applySearch
+/* const applySearch = (cryptoOrders : CryptoOrder[], searchText : string): CryptoOrder []=>{
+  return cryptoOrders.filter((row) =>
+    row.Details.toLowerCase().includes(searchText.toLowerCase()) ||
+    row.ID_Account.toLowerCase().includes(searchText.toLowerCase()) ||
+    row.Source.toLowerCase().includes(searchText.toLowerCase()) ||
+    row.amount.toLowerCase().includes(searchText.toLowerCase()) ||
+    row.status.toLowerCase().includes(searchText.toLowerCase())
+  );
+}; */
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
 //Select Columns to display
   const [selectedColumns, setSelectedColumns] = useState(Object.keys(cryptoOrders[0]));
@@ -100,31 +87,35 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       }
     });
   };
-/*   const FilterList =()=>
-  {
-    {Object.keys(cryptoOrders[0]).map((column) => (
-      <div key={column}>
-        <input
-          type="checkbox"
-          checked={selectedColumns.includes(column)}
-          onChange={() => handleColumnSelection(column)}
-        />
-        <label>{column}</label>
-      </div>
-    ))}
-  } */
-  //
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
 
   const selectedBulkActions = selectedCryptoOrders.length > 0;
+
+  //const [currentPage, setCurrentPage] = useState<number>(1);
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(10);
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
 
+/*   const [searchTexte, setSearchTexte] = useState('');
+  const [rows, setRows]= useState(cryptoOrders);
+  useEffect(()=>{
+    //appliquer la pagination avec les nouvelles lignes filtrées après la recherche
+    const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
+    const paginatedCryptoOrders = applyPagination(filteredCryptoOrders, currentPage, limit);
+    setRows (paginatedCryptoOrders);
+  },[cryptoOrders, filters, currentPage, limit]);
+
+  const handleSearchChange =(event)=>
+  {
+    setSearchTexte(event.target.value);
+    const filteredRows = applySearch(cryptoOrders, event.target.value) ;
+    setRows(filteredRows);
+    setCurrentPage(1);//Réinitialiser la page actuelle à 1 après la recherche
+  } */
   const statusOptions = [
     {
       id: 'all',
@@ -244,6 +235,8 @@ function ColonnesAAfficher ()
     </>
   );
 }
+//Colonne à ne pas prendre en compte
+const columnsToDisplay = selectedColumns.filter(column => column !== 'id');
 
   const handleSelectOneCryptoOrder = (
     _event: ChangeEvent<HTMLInputElement>,
@@ -270,11 +263,11 @@ function ColonnesAAfficher ()
   };
 
   const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
+  /* const paginatedCryptoOrders = applyPagination(
     filteredCryptoOrders,
     page,
     limit
-  );
+  ) */
   const selectedSomeCryptoOrders =
     selectedCryptoOrders.length > 0 &&
     selectedCryptoOrders.length < cryptoOrders.length;
@@ -296,8 +289,14 @@ function ColonnesAAfficher ()
       row.status.toLowerCase().includes(event.target.value.toLowerCase())
     );
     setRows(filteredRows);
+    //setCurrentPage(1); //reset page to 1 after search
   };
-
+//Apply pagination with the new filtered row 
+const paginatedCryptoOrders = applyPagination(
+    filteredCryptoOrders,
+    page,
+    limit
+  )
   return (
     <>
     {/** Espace de recherche */}
@@ -333,7 +332,6 @@ function ColonnesAAfficher ()
         </Box>
       )}
       {!selectedBulkActions && (
-        
         <CardHeader
           action={
             <>
@@ -349,7 +347,7 @@ function ColonnesAAfficher ()
         />
       )}
       <Divider />
- {/*      <TableContainer>
+      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -361,35 +359,21 @@ function ColonnesAAfficher ()
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              
-             {selectedColumns.filter(column =>column !== 'id').map(  
-              (column) => (
-              <TableCell key={column}>{column}</TableCell>
-            ))}
-              <TableCell align="right">Actions</TableCell> 
+              {columnsToDisplay.map((column) => (
+                <TableCell key={column}>{column}</TableCell>
+              ))}
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.id
-              );
-              return (
-              <>
-                <TableRow
-                  hover
-                  key={cryptoOrder.id}
-                  selected={isCryptoOrderSelected}
-                >
-                  
-            {rows.map((row)=>
+            {paginatedCryptoOrders.map((cryptoOrder, index) => {
+              const isCryptoOrderSelected = selectedCryptoOrders.includes(cryptoOrder.id);
+              const row = rows[index];
 
-              <TableRow
-                hover
-                key={row.id}
-                selected={isCryptoOrderSelected}
-              >
-                  <TableCell padding="checkbox">
+              return (
+                <React.Fragment key={cryptoOrder.id}>
+                  <TableRow hover selected={isCryptoOrderSelected}>
+                    <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isCryptoOrderSelected}
@@ -398,152 +382,66 @@ function ColonnesAAfficher ()
                         }
                         value={isCryptoOrderSelected}
                       />
-                  </TableCell>                  
-                  {selectedColumns.map((column) => (
-                    <>
+                    </TableCell>
+                    {columnsToDisplay.map((column) => (
                       <TableCell key={column}>
-                        <Typography variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            noWrap>
-                          {row[column]}
-                        </Typography>
+                        {column !== 'status' ? ( 
+                          // Verifier si le champ à afficher n'est pas le 'status'
+                          column !== 'Date' ?(// Veriffier si le champ à afficher n'est pas le 'Date'
+                          row && row[column]?(
+                            <Typography
+                              variant="body1"
+                              fontWeight="bold"
+                              color="text.primary"
+                              gutterBottom
+                              noWrap
+                            >
+                              {row[column]}
+                            </Typography>
+                            ): null
+                        ):( // si le champ à afficher est le 'Date', formater la date
+                            row && row['Date'] ? format(new Date(row['Date']), 'dd MMMM yyyy') : null
+                        ) 
+                        ):( // si le champ à afficher est le 'status', appliquer la fonction getStatusLabel aux différentes valeurs du champ
+                            row?.['status'] ? getStatusLabel(row['status']) : null
+                        )} 
                       </TableCell>
-                    </>   
-                ))}
-                <TableCell align="right">
-                    <Tooltip title="Edit Order" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete Order" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <DeleteTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-              </TableRow>
-            )}
-        </TableRow>
-        </>        
+                    ))}
+                    <TableCell align="right">
+                      <Tooltip title="Edit Order" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: theme.palette.primary.main
+                          }}
+                          color="inherit"
+                          size="small"
+                        >
+                          <EditTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete Order" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': { background: theme.colors.error.lighter },
+                            color: theme.palette.error.main
+                          }}
+                          color="inherit"
+                          size="small"
+                        >
+                          <DeleteTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                </React.Fragment>
               );
             })}
           </TableBody>
         </Table>
-      </TableContainer> */}
-      <TableContainer>
-  <Table>
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            checked={selectedAllCryptoOrders}
-            indeterminate={selectedSomeCryptoOrders}
-            onChange={handleSelectAllCryptoOrders}
-          />
-        </TableCell>
-        {selectedColumns.filter(column => column !== 'id').map((column) => (
-          <TableCell key={column}>{column}</TableCell>
-        ))}
-        <TableCell align="right">Actions</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {paginatedCryptoOrders.map((cryptoOrder, index) => {
-        const isCryptoOrderSelected = selectedCryptoOrders.includes(cryptoOrder.id);
-        const row = rows[index];
-
-        return (
-          <React.Fragment key={cryptoOrder.id}>
-            <TableRow hover selected={isCryptoOrderSelected}>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  color="primary"
-                  checked={isCryptoOrderSelected}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    handleSelectOneCryptoOrder(event, cryptoOrder.id)
-                  }
-                  value={isCryptoOrderSelected}
-                />
-              </TableCell>
-              {selectedColumns.filter(column => column !== 'id').map((column) => (
-                <TableCell key={column}>
-                  {column !== 'status' ? ( 
-                    // Veriffier si le champ à afficher n'est pas le 'status'
-                    column !== 'Date' ?(// Veriffier si le champ à afficher n'est pas le 'Date'
-                    row && column && row[column]?(
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {row[column]}
-                      </Typography>
-                      ): null
-                  ): 
-                  // si le champ à afficher est le 'Date', formater la date
-                  format(row['Date'], 'dd MMMM yyyy') 
-                  ):(
-                     // si le champ à afficher est le 'status', appliquer la fonction getStatusLabel aux différentes valeurs du champ
-                  row && row['status'] ? getStatusLabel(row['status']) : null)} 
-                </TableCell>
-              ))}
-              <TableCell align="right">
-                <Tooltip title="Edit Order" arrow>
-                  <IconButton
-                    sx={{
-                      '&:hover': {
-                        background: theme.colors.primary.lighter
-                      },
-                      color: theme.palette.primary.main
-                    }}
-                    color="inherit"
-                    size="small"
-                  >
-                    <EditTwoToneIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete Order" arrow>
-                  <IconButton
-                    sx={{
-                      '&:hover': { background: theme.colors.error.lighter },
-                      color: theme.palette.error.main
-                    }}
-                    color="inherit"
-                    size="small"
-                  >
-                    <DeleteTwoToneIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-          </React.Fragment>
-        );
-      })}
-    </TableBody>
-  </Table>
-</TableContainer>
+      </TableContainer>
 
       <Box p={2}>
         <TablePagination
@@ -553,7 +451,7 @@ function ColonnesAAfficher ()
           onRowsPerPageChange={handleLimitChange}
           page={page}
           rowsPerPage={limit}
-          rowsPerPageOptions={[5, 10, 25, 30]}
+          rowsPerPageOptions={[10, 25, 30]}
         />
       </Box>
     </Card>
