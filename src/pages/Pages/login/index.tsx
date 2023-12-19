@@ -9,6 +9,7 @@ function Overview() {
   return (
   <>
       <LoginForm/>
+      <Footer/>
   </>
   );
 }

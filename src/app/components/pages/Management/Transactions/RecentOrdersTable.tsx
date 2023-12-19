@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState, useEffect} from 'react';
+import { FC, ChangeEvent, useState} from 'react';
 import React from 'react';
 import { format } from 'date-fns';
 import PropTypes from 'prop-types';
@@ -108,7 +108,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     const paginatedCryptoOrders = applyPagination(filteredCryptoOrders, currentPage, limit);
     setRows (paginatedCryptoOrders);
   },[cryptoOrders, filters, currentPage, limit]);
-
   const handleSearchChange =(event)=>
   {
     setSearchTexte(event.target.value);

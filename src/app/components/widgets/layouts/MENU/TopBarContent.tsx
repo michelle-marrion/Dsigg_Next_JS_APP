@@ -1,5 +1,4 @@
-import { useState, SyntheticEvent,useContext } from 'react';
-import { useRouter } from 'next/router';
+import { useState, SyntheticEvent } from 'react';
 import {
   Box,
   IconButton,
@@ -20,8 +19,6 @@ import {
 
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-
-import { SidebarContext } from 'src/app/components/widgets/contexts/SidebarContext';
 import NextLink from 'next/link';
 
 import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone';

@@ -2,19 +2,13 @@ import {
   alpha,
   Badge,
   Box,
-  Divider,
   IconButton,
-  List,
-  ListItem,
   Popover,
   Tooltip,
-  Typography
 } from '@mui/material';
 import { useRef, useState } from 'react';
 import ViewWeekRoundedIcon from '@mui/icons-material/ViewWeekRounded';
 import { styled } from '@mui/material/styles';
-
-import { formatDistance, subDays } from 'date-fns';
 
 const FilterBadge = styled(Badge)(
   ({ theme }) => `
