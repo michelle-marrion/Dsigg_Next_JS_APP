@@ -58,7 +58,7 @@ function DashboardCrypto() {
       <Head>
         <title>Crypto Dashboard</title>
       </Head>
-      {/* <NavBar/> */}
+      <NavBar/>
       <PageTitleWrapper>
         <PageTitle
           heading="Tables of Orders"
