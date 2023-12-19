@@ -8,7 +8,6 @@ import
   MenuItem, Typography, useTheme, CardHeader, Input, Container, Grid, Menu,
 } from '@mui/material';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ViewWeekRoundedIcon from '@mui/icons-material/ViewWeekRounded';
 
@@ -16,6 +15,7 @@ import ViewWeekRoundedIcon from '@mui/icons-material/ViewWeekRounded';
 import Label from '@/app/components/shared/Label';
 import { CryptoOrder, CryptoOrderStatus } from '@/data/models/crypto_order';
 import BulkActions from './BulkActions';
+import DeleteModals from './DeleteModals';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -422,16 +422,7 @@ const paginatedCryptoOrders = applyPagination(
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete Order" arrow>
-                        <IconButton
-                          sx={{
-                            '&:hover': { background: theme.colors.error.lighter },
-                            color: theme.palette.error.main
-                          }}
-                          color="inherit"
-                          size="small"
-                        >
-                          <DeleteTwoToneIcon fontSize="small" />
-                        </IconButton>
+                        <DeleteModals/>
                       </Tooltip>
                     </TableCell>
                   </TableRow>
