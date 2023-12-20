@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import NavBar from '@/app/components/shared/NavBarLink';
 import SidebarLayout from '@/app/components/widgets/layouts/SidebarLayout';
 import PageTitle from '@/app/components/shared/PageTitle';
 import PageTitleWrapper from '@/app/components/shared/PageTitleWrapper';
@@ -22,6 +23,7 @@ function Buttons() {
       <Head>
         <title>Buttons - Components</title>
       </Head>
+      <NavBar/>
       <PageTitleWrapper>
         <PageTitle
           heading="Buttons"

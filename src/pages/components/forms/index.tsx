@@ -10,7 +10,7 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Divider
+  Divider, Button, Link
 } from '@mui/material';
 import Footer from '@/app/components/shared/Footer';
 
@@ -33,6 +33,9 @@ import VolumeUp from '@mui/icons-material/VolumeUp';
 
 import Switch from '@mui/material/Switch';
 
+import AuthorForm from '@/app/components/shared/Forms'
+import ImageUpload from '@/app/components/shared/Forms/Image/ManyImage';
+import FileUpload from '@/app/components/shared/Forms/Files/FileUpload';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const currencies = [
@@ -77,6 +80,7 @@ function Forms() {
           heading="Forms"
           subHeading="Components that are used to build interactive placeholders used for data collection from users."
           docs="https://material-ui.com/components/text-fields/"
+          text_b='Forms documentation'
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -473,7 +477,43 @@ function Forms() {
               </CardContent>
             </Card>
           </Grid>
+          <Grid item xs={12}>
+            <Card>
+                  <CardHeader title="Froms Add" />
+                  <Divider />
+                  <CardContent>
+                    <AuthorForm/>
+                  </CardContent>
+            </Card>
+          </Grid>
+          
+        <Grid item xs={12}>
+                  <Card>
+                    <CardHeader title="Upload Documents" />
+                    <Divider />
+                    <CardContent>
+                      <ImageUpload/>
+                    </CardContent>
+                  </Card>
         </Grid>
+        <Grid item xs={12}>
+                  <Card>
+                    <CardHeader title="Upload Images" />
+                    <Divider />
+                    <CardContent>
+                      <Button>
+                        <Link
+                          href="/components/forms/FileUpload"
+                          underline="hover"
+                        >
+                          Upload Documents
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+        </Grid>
+        </Grid>
+        
       </Container>
       <Footer />
     </>
