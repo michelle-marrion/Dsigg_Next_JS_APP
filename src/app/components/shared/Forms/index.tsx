@@ -24,7 +24,7 @@ export default function AuthorForm() {
   return (
       <>
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-      <Typography variant="h6">Créer un auteur</Typography>
+      <Typography variant="h6"></Typography>
       <Grid container spacing={2}>
             <Grid item xs={6}>
                   <TextField
@@ -54,20 +54,6 @@ export default function AuthorForm() {
             />
             </Grid>
       </Grid>
-
-      
-      <TextField
-        variant="outlined"
-        margin="normal"
-        fullWidth
-        id="bio"
-        label="Bio"
-        name="bio"
-        multiline
-        rows={4}
-        value={bio}
-        onChange={(e) => setBio(e.target.value)}
-      />
       <Text>Bio</Text>
       <TextEditor/>
       <Grid container spacing={2}>
