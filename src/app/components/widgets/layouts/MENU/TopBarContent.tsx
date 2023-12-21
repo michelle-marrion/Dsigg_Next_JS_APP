@@ -1,34 +1,48 @@
-import { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent,useContext } from 'react';
+import { useRouter } from 'next/router';
 import {
   Box,
+  IconButton,
+  Tooltip,
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Drawer,
+  Divider,
   Typography,
   List,
   ListItem,
   ListItemText,
   ListItemIcon,
   styled,
+  useTheme
 } from '@mui/material';
 
-/**Import Icon */
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
-import CheckBoxTwoToneIcon from '@mui/icons-material/CheckBoxTwoTone';
-import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
-import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
-import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwoTone';
+import { SidebarContext } from 'src/app/components/widgets/contexts/SidebarContext';
+import NextLink from 'next/link';
+
+import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import NotificationsOffTwoToneIcon from '@mui/icons-material/NotificationsOffTwoTone';
+
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone';
-import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
-import DisplaySettingsRoundedIcon from '@mui/icons-material/DisplaySettingsRounded';
-import WidgetsRoundedIcon from '@mui/icons-material/WidgetsRounded';
-import BallotTwoToneIcon from '@mui/icons-material/BallotTwoTone';
-import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import NextLink from 'next/link';
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
+
+
+const RootWrapper = styled(Box)(
+  ({ theme }) => `
+        @media (min-width: ${theme.breakpoints.values.md}px) {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      }
+`
+);
 
 const ListItemIconWrapper = styled(ListItemIcon)(
   ({ theme }) => `
@@ -70,27 +84,18 @@ const AccordionSummaryWrapper = styled(AccordionSummary)(
         }
 `
 );
-const MenuWrapper = styled(Box)(
-  ({ theme }) => `
-  .MuiList-root {
-    padding: ${theme.spacing(1)};
 
-    & > .MuiList-root {
-      padding: 0 ${theme.spacing(0)} ${theme.spacing(1)};
-    }
-  }
+function TopBarContent() {
+  const theme = useTheme();
+  const { closeSidebar } = useContext(SidebarContext);
+  const router = useRouter();
+  const currentRoute = router.pathname;
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-    .MuiListSubheader-root {
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: ${theme.typography.pxToRem(12)};
-      color: ${theme.colors.alpha.trueWhite[50]};
-      padding: ${theme.spacing(0, 2.5)};
-      line-height: 1.4;
-    }
-`
-);
-function SidebarMenu() {
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   const [expanded, setExpanded] = useState<string | false>('section1');
 
   const handleChange =
@@ -98,21 +103,45 @@ function SidebarMenu() {
       setExpanded(isExpanded ? section : false);
     };
 
-    //const router = useRouter();
-    //const currentRoute = router.pathname;
-
   return (
     <>
-      <MenuWrapper>
+      <RootWrapper>
+          <Tooltip placement="bottom" title="Conversation information">
+            <IconButton color="primary" onClick={handleDrawerToggle}>
+              <InfoTwoToneIcon />
+            </IconButton>
+          </Tooltip>
+      </RootWrapper>
+      <Drawer
+        sx={{
+          display: { xs: 'none', md: 'flex' }
+        }}
+        variant="temporary"
+        anchor={theme.direction === 'rtl' ? 'left' : 'right'}
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        elevation={9}
+      >
+        <Box
+          sx={{
+            minWidth: 360
+          }}
+          p={2}
+        >
+          <Divider
+            sx={{
+              my: 3
+            }}
+          />
           <Accordion
             expanded={expanded === 'section1'}
             onChange={handleChange('section1')}
-            /* style={{backgroundColor:'#1b365f',
-                    color:'white'        
-          }}
-             */
+            
           >
             <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
+{/*              <Button startIcon={<HomeRoundedIcon />} disabled>
+              
+             </Button> */}
               <Typography variant="h5" >Home</Typography>
             </AccordionSummaryWrapper>
             <AccordionDetails
@@ -122,8 +151,7 @@ function SidebarMenu() {
             >
               <List component="nav" style={{margin:5}}>
                 <NextLink href="/" passHref>
-                <ListItem button
-                >
+                <ListItem button>
                   <ListItemIconWrapper>
                     <ArrowBackIosRoundedIcon /> 
                   </ListItemIconWrapper>
@@ -167,7 +195,7 @@ function SidebarMenu() {
                 <NextLink href="/management/profile" passHref>
                 <ListItem button>
                   <ListItemIconWrapper>
-                    <AccountCircleTwoToneIcon /> 
+                    <ArrowBackIosRoundedIcon /> 
                   </ListItemIconWrapper>
                   <ListItemText
                     primary="User Profil"
@@ -177,7 +205,7 @@ function SidebarMenu() {
                 </NextLink>
                 <ListItem button>
                   <ListItemIconWrapper>
-                    <DisplaySettingsRoundedIcon/>
+                    <HomeRoundedIcon /> 
                   </ListItemIconWrapper>
                   <NextLink href="/management/profile/settings">     
                   <ListItemText
@@ -205,7 +233,7 @@ function SidebarMenu() {
               <List component="nav">
                 <ListItem button>
                   <ListItemIconWrapper>
-                    <AccountCircleTwoToneIcon />
+                    <NotificationsOffTwoToneIcon />
                   </ListItemIconWrapper>
                   <ListItemText
                     primary="Utilisateurs"
@@ -232,122 +260,22 @@ function SidebarMenu() {
                 </ListItem>
                 <ListItem button>
                   <ListItemIconWrapper>
-                    <WidgetsRoundedIcon />
+                    <WarningTwoToneIcon />
                   </ListItemIconWrapper>
                   <ListItemText
                     primary="Gerer les Menu"
                     primaryTypographyProps={{ variant: 'h5' }}
-                    secondary="All Menu"
+                    secondary="Report the conversation and provide feedback"
                     secondaryTypographyProps={{ variant: 'subtitle1' }}
                   />
                 </ListItem>
               </List>
             </AccordionDetails>
           </Accordion>
-          <Accordion
-            expanded={expanded === 'section4'}
-            onChange={handleChange('section4')}     
-          >
-            <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h5" >Extra Pages</Typography>
-            </AccordionSummaryWrapper>
-            <AccordionDetails
-              sx={{
-                p: 0
-              }}
-            >
-              <List component="nav" style={{margin:5}}>
-                <NextLink href="/status/500" passHref>
-                <ListItem button
-                >
-                  <ListItemIconWrapper>
-                    <CameraFrontTwoToneIcon />
-                  </ListItemIconWrapper>
-                  <ListItemText
-                    primary="Error 505"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  /> 
-                </ListItem>
-                </NextLink>
-                <ListItem button>
-                  <ListItemIconWrapper>
-                     <CheckBoxTwoToneIcon />
-                  </ListItemIconWrapper>
-                  <NextLink href="/status/404">     
-                  <ListItemText
-                    primary="Error 404"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
-                  </NextLink>
-                </ListItem>
-                <ListItem button>
-                  <ListItemIconWrapper>
-                    <ChromeReaderModeTwoToneIcon />
-                  </ListItemIconWrapper>
-                  <NextLink href="/status/coming-soon">     
-                  <ListItemText
-                    primary="Coming Soon"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
-                  </NextLink>
-                </ListItem>
-                <ListItem button>
-                  <ListItemIconWrapper>
-                    <WorkspacePremiumTwoToneIcon />
-                  </ListItemIconWrapper>
-                  <NextLink href="/status/maintenance">     
-                  <ListItemText
-                    primary="Maintenance"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
-                  </NextLink>
-                </ListItem>
-              </List>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === 'section5'}
-            onChange={handleChange('section5')}     
-          >
-            <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h5" >Forms Components</Typography>
-            </AccordionSummaryWrapper>
-            <AccordionDetails
-              sx={{
-                p: 0
-              }}
-            >
-              <List component="nav" style={{margin:5}}>
-                <NextLink href="/components/buttons" passHref        
-                >
-                <ListItem button>
-                  <ListItemIconWrapper>
-                    <BallotTwoToneIcon />
-                  </ListItemIconWrapper>
-                  <ListItemText
-                    primary="Buttons"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  /> 
-                </ListItem>
-                </NextLink>
-                <ListItem button>
-                  <ListItemIconWrapper>
-                    <TrafficTwoToneIcon/>
-                  </ListItemIconWrapper>
-                  <NextLink href="/components/forms">     
-                  <ListItemText
-                    primary="Forms"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
-                  </NextLink>
-                </ListItem>
-              </List>
-            </AccordionDetails>
-          </Accordion>
-          
-      </MenuWrapper>
+        </Box>
+      </Drawer>
     </>
   );
 }
 
-export default SidebarMenu;
+export default TopBarContent;

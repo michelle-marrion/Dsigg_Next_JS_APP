@@ -73,7 +73,8 @@ declare module '@mui/material/styles' {
         lighter: string;
         light: string;
         main: string;
-        dark: string;
+        dark: '#1b365f';
+        blue : '#1b365f';
       };
       success: {
         lighter: string;

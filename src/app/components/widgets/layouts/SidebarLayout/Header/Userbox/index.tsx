@@ -60,9 +60,9 @@ const UserBoxDescription = styled(Typography)(
 
 function HeaderUserbox() {
   const user = {
-    name: 'Catherine Pike',
-    avatar: '/images/avatars/1.jpg',
-    jobtitle: 'Project Manager'
+    name: 'Michelle Ngami',
+    avatar: '/logos/logo_AGL_rgb_Blue.png',
+    jobtitle: 'Developpeur ASP.NET Core'
   };
 
   const ref = useRef<any>(null);
@@ -120,12 +120,6 @@ function HeaderUserbox() {
             <ListItem button>
               <AccountBoxTwoToneIcon fontSize="small" />
               <ListItemText primary="My Profile" />
-            </ListItem>
-          </NextLink>
-          <NextLink href="/applications/messenger" passHref>
-            <ListItem button>
-              <InboxTwoToneIcon fontSize="small" />
-              <ListItemText primary="Messenger" />
             </ListItem>
           </NextLink>
           <NextLink href="/management/profile/settings" passHref>

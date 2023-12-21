@@ -41,7 +41,7 @@ const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
   }
 }));
 
-function Logo_Blue() {
+function Logo_White() {
   return (
     <TooltipWrapper
     title="Template App NextJS"
@@ -51,7 +51,7 @@ function Logo_Blue() {
         <LogoSignWrapper>
           <img 
             alt='AGL logo'
-            src='/logos/logo_AGL_rgb_Blue.png'
+            src='/logos/logo_AGL_RGB_w.png'
             style={{width:'auto', height:'auto'}}
           />
         </LogoSignWrapper>
@@ -60,4 +60,4 @@ function Logo_Blue() {
   );
 }
 
-export default Logo_Blue;
+export default Logo_White;

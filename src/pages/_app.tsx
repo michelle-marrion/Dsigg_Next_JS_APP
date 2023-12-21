@@ -1,3 +1,4 @@
+import 'src/styles/globals.css'
 import type { ReactElement, ReactNode } from 'react';
 
 import type { NextPage } from 'next';
@@ -11,7 +12,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '@/createEmotionCache';
 import {SidebarProvider} from  '@/app/components/widgets/contexts/SidebarContext'
-//import SidebarProvider from '@/app/components/widgets/layouts/SidebarLayout';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
@@ -56,10 +56,3 @@ function TokyoApp(props: TokyoAppProps) {
 }
 
 export default TokyoApp;
-
-import 'src/styles/globals.css'
-// import type { AppProps } from 'next/app'
-
-// export default function App({ Component, pageProps }: AppProps) {
-//   return <Component {...pageProps} />
-// }

@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
+import GoToTop from '@/app/components/shared/Scroll-To-Top';
+
+
 
 interface SidebarLayoutProps {
   children?: ReactNode;
@@ -11,7 +14,8 @@ interface SidebarLayoutProps {
 
 const SidebarLayout: FC<SidebarLayoutProps> = ({ children }) => {
   const theme = useTheme();
-
+  // ** Props
+  
   return (
     <>
       <Box
@@ -58,6 +62,8 @@ const SidebarLayout: FC<SidebarLayoutProps> = ({ children }) => {
           <Box display="block">{children}</Box>
         </Box>
       </Box>
+      {/*<GoToTop/>  */}
+      <GoToTop/>
     </>
   );
 };

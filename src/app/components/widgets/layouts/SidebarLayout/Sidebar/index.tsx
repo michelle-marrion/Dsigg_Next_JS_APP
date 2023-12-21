@@ -5,18 +5,17 @@ import { SidebarContext } from 'src/app/components/widgets/contexts/SidebarConte
 import {
   Box,
   Drawer,
-  alpha,
+ // alpha,
   styled,
   Divider,
   useTheme,
-  Button,
-  lighten,
-  darken
+  //lighten,
+  //darken
 } from '@mui/material';
 
 import SidebarMenu from './SidebarMenu';
-import Logo from '@/app/components/shared/LogoSign';
-
+import Logo_White from '@/app/components/shared/LogoSign/Logo_White';
+import Logo_Blue from '@/app/components/shared/LogoSign'
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
         width: ${theme.sidebar.width};
@@ -25,7 +24,7 @@ const SidebarWrapper = styled(Box)(
         position: relative;
         z-index: 7;
         height: 100%;
-        padding-bottom: 68px;
+        padding-bottom: -68px;
 `
 );
 
@@ -45,10 +44,11 @@ function Sidebar() {
           position: 'fixed',
           left: 0,
           top: 0,
-          background:
+          background : '#FFF',
+          /*   background:
             theme.palette.mode === 'dark'
-              ? alpha(lighten(theme.header.background, 0.1), 0.5)
-              : darken(theme.colors.alpha.black[100], 0.5),
+              ? alpha(lighten(theme.header.background, 0.0), 0.0)
+              : darken(theme.colors.primary.dark,0.6), */
           boxShadow:
             theme.palette.mode === 'dark' ? theme.sidebar.boxShadow : 'none'
         }}
@@ -61,7 +61,7 @@ function Sidebar() {
                 width: 52
               }}
             >
-              <Logo />
+              <Logo_Blue />
             </Box>
           </Box>
           <Divider
@@ -78,19 +78,6 @@ function Sidebar() {
             background: theme.colors.alpha.trueWhite[10]
           }}
         />
-        <Box p={2}>
-          <Button
-            href="https://bloomui.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="contained"
-            color="success"
-            size="small"
-            fullWidth
-          >
-            Upgrade to PRO
-          </Button>
-        </Box>
       </SidebarWrapper>
       <Drawer
         sx={{
@@ -104,10 +91,10 @@ function Sidebar() {
       >
         <SidebarWrapper
           sx={{
-            background:
-              theme.palette.mode === 'dark'
+            background: '#1b365f'
+             /*  theme.palette.mode === 'dark'
                 ? theme.colors.alpha.white[100]
-                : darken(theme.colors.alpha.black[100], 0.5)
+                : darken(theme.colors.alpha.black[100], 0.5) */
           }}
         >
           <Scrollbar>
@@ -118,7 +105,7 @@ function Sidebar() {
                   width: 52
                 }}
               >
-                <Logo />
+                <Logo_White />
               </Box>
             </Box>
             <Divider
